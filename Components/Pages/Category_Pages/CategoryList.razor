@@ -29,5 +29,13 @@ else
 
 @code {
     private bool IsProcessing { get; set; } = false;
+    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsProcessing = true;
+        await Task.Delay(2000);
+        IsProcessing = false;
+    }
 
 }
