@@ -4,6 +4,8 @@
 @inject ICategoryRepository _categoryRepository
 @inject NavigationManager _navigationManager
 
+@inject IJSRuntime _jsRuntime
+
 @if (IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
@@ -33,7 +35,7 @@ else
                     <div class="row mt-3">
                         <div class="col-6 col-md-3">
                             <button type="submit" class="btn btn-primary form-control" disabled="@IsProcessing">
-                                <i class="bi bi-save"></i> Update
+                                <i class="bi bi-save"></i> Save
                             </button>
                         </div>
                         <div class="col-6 col-md-3">
@@ -82,10 +84,12 @@ else
         if (Category.Id == 0)
         {
             await _categoryRepository.CreateAsync(Category);
+            await _jsRuntime.ToastrSuccess("Category created successfully!");
         }
         else
         {
             await _categoryRepository.UpdateAsync(Category);
+            await _jsRuntime.ToastrError("Category updated successfully!");
         }
         IsProcessing = false;
         _navigationManager.NavigateTo("/category");
