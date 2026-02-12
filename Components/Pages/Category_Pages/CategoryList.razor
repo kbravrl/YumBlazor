@@ -59,7 +59,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         IsProcessing = true;
-        await Task.Delay(2000);
+        await Task.Yield();
         LoadCategories();
 
         IsProcessing = false;
@@ -67,6 +67,7 @@ else
 
     private void LoadCategories()
     {
+        Thread.Sleep(5000);
         Categories = _categoryRepository.GetAll();
 
     }
