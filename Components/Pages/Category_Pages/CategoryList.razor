@@ -91,4 +91,21 @@ else
         _jsRuntime.InvokeVoidAsync("ShowConfirmationModal");
     }
 
+    private async Task ConfirmDeleteClick(bool isConfirmed)
+    {
+        IsProcessing = true;
+        if(isConfirmed && DeleteCategoryID != 0)
+        {
+            var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
+            if(result)
+              _jsRuntime.ToastrSuccess("Category Delete Successfully");
+            else
+                _jsRuntime.ToastrError("Category Delete Failed");
+            await LoadCategories();
+        }
+        DeleteCategoryID = 0;
+        IsProcessing = false;
+
+    }
+
 }
