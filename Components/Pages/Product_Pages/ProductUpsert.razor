@@ -55,12 +55,16 @@ else
                         <ValidationMessage For="@(() => Product.CategoryId)" />
                     </div>
                     <div class="form-floating py-3 col-12">
-                        <InputFile OnChange="LoadFiles" class="form-control" id="custonFile"
-                                   accept="image/x-png,image/jpeg">Upload Image</InputFile>
-                        <label for="customFile">Upload İmage</label>
+                        @if(Product.ImageUrl == null)
+                        {
+                            <InputFile OnChange="LoadFiles" class="form-control pb-3" id="custonFile"
+                                       accept="image/x-png,image/jpeg">Upload Image</InputFile>
+                            <label for="customFile">Upload İmage</label>
+                        }
+   
                         @if(Product.ImageUrl!=null)
                         {
-                            <dic class="row pt-3">
+                            <dic class="row">
                                 <div class="mt-3">
                                     <img src="@Product.ImageUrl" alt="product image" width="200" height="200" />
                                 </div>
