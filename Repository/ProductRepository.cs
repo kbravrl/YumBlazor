@@ -7,9 +7,11 @@ namespace YumBlazor.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _db;
-        public ProductRepository(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductRepository(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment =  webHostEnvironment;
         }
         public async Task<Product> GetAsync(int id)
         {
@@ -31,22 +33,26 @@ namespace YumBlazor.Repository
            var objFromDB = await _db.Product.FirstOrDefaultAsync(c => c.Id == obj.Id);
             if(objFromDB != null)
             {
-                obj.Name = obj.Name;
-                obj.Description = obj.Description;
-                obj.Price = obj.Price;
-                obj.SpecialTag = obj.SpecialTag;
-                obj.CategoryId = obj.CategoryId;
-                obj.ImageUrl = obj.ImageUrl;
-                obj.CategoryId = obj.CategoryId;
+                objFromDB.Name = obj.Name;
+                objFromDB.Description = obj.Description;
+                objFromDB.Price = obj.Price;
+                objFromDB.SpecialTag = obj.SpecialTag;
+                objFromDB.CategoryId = obj.CategoryId;
+                objFromDB.ImageUrl = obj.ImageUrl;
+
                 _db.Product.Update(objFromDB);
                 await _db.SaveChangesAsync();
-                return obj;
             }
             return obj;
         }
         public async Task<bool> DeleteAsync(int id)
         {
             var obj = await _db.Product.FirstOrDefaultAsync(c => c.Id == id);
+            var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('/'));
+             if (File.Exists(imagePath))
+            {
+                File.Delete(imagePath);
+            }
             if(obj != null)
             {
                 _db.Product.Remove(obj);
