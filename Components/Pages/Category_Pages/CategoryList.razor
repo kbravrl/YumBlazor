@@ -2,9 +2,13 @@
 
 @inject ICategoryRepository _categoryRepository
 @inject IJSRuntime _jsRuntime
-<BootstrapModal OnModalConfirmation="ConfirmDeleteClick">
-    
+
+<BootstrapModal  OnModalConfirmation="ConfirmDeleteClick"
+    ButtonBootstrapStyle="btn-danger"
+    ButtonText="Delete"
+    ModalTitle="Are you sure you want to delete this category?">
 </BootstrapModal>
+
 @if(IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-coumn align-items-center bg-white justify-content-center">
@@ -65,10 +69,6 @@ else
     private bool IsProcessing { get; set; } = true;
     private IEnumerable<Category> Categories { get; set; } = new List<Category>();
     private int DeleteCategoryID { get; set; } = 0;
-
-    protected override async Task OnInitializedAsync()
-    {
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
