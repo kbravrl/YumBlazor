@@ -2,7 +2,7 @@
 
 @inject ICategoryRepository _categoryRepository
 @inject IJSRuntime _jsRuntime
-<BootstrapModal >
+<BootstrapModal OnModalConfirmation="ConfirmDeleteClick">
     
 </BootstrapModal>
 @if(IsProcessing)
@@ -94,6 +94,7 @@ else
     private async Task ConfirmDeleteClick(bool isConfirmed)
     {
         IsProcessing = true;
+        await _jsRuntime.InvokeVoidAsync("HideConfirmationModal");
         if(isConfirmed && DeleteCategoryID != 0)
         {
             var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
