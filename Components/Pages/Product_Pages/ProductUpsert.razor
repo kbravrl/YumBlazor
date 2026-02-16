@@ -46,13 +46,18 @@ else
                     <div class="form-floating py-3 col-12">
                         <InputSelect @bind-Value="Product.CategoryId" class="form-select" id="Category">
                             <option value="0" disabled selected>--Select Category--</option>
-                            @foreach (var category in Categories)
+                            @foreach (var category in _categories)
                             {
                                 <option value="@category.Id">@category.Name</option>
                             }
                         </InputSelect>
                         <label for="category">Category</label>
                         <ValidationMessage For="@(() => Product.CategoryId)" />
+                    </div>
+                    <div class="form-floating py-3 col-12">
+                        <InputFile OnChange="LoadFiles" class="form-control" id="custonFile"
+                        accept="image/x-png,image/jpeg" />
+                        <label for="customFile">Upload İmage</label>
                     </div>
                     <div class="row mt-3">
                         <div class="col-6 col-md-3">
@@ -81,8 +86,12 @@ else
     [SupplyParameterFromForm]
     private Product Product { get; set; } = new Product();
 
-    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
- 
+    private IEnumerable<Category> _categories { get; set; } = new List<Category>();
+
+    private string? _directoryPath { get; set; }
+
+    private bool _isImageLoad { get; set; } = false;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -99,7 +108,7 @@ else
         {
             Product = await _productRepository.GetAsync(Id);
         }
-        Categories = await _categoryRepository.GetAllAsync();
+        _categories = await _categoryRepository.GetAllAsync();
     }
 
     private async Task Upsertproduct()
@@ -118,5 +127,10 @@ else
         }
         IsProcessing = false;
         _navigationManager.NavigateTo("/Product");
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+           
     }
 }
