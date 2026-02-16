@@ -4,7 +4,7 @@
 @inject IProductRepository _productRepository
 @inject ICategoryRepository _categoryRepository
 @inject NavigationManager _navigationManager
-
+@inject IWebHostEnvironment _webHostEnvironment
 @inject IJSRuntime _jsRuntime
 
 @if (IsProcessing)
@@ -19,7 +19,7 @@ else
         <div class="card-header bg-black bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="text-white py-2">@(Id==0 ? "Create" : "Update") Product</h2>
+                    <h2 class="text-white py-2">@(Id == 0 ? "Create" : "Update") Product</h2>
                 </div>
             </div>
         </div>
@@ -56,8 +56,21 @@ else
                     </div>
                     <div class="form-floating py-3 col-12">
                         <InputFile OnChange="LoadFiles" class="form-control" id="custonFile"
-                        accept="image/x-png,image/jpeg" />
+                                   accept="image/x-png,image/jpeg">Upload Image</InputFile>
                         <label for="customFile">Upload İmage</label>
+                        @if(Product.ImageUrl!=null)
+                        {
+                            <dic class="row pt-3">
+                                <div class="mt-3">
+                                    <img src="@Product.ImageUrl" alt="product image" width="200" height="200" />
+                                </div>
+                                <div class="col-md-9 pt-2">
+                                    <i class="bi bi-trash btn btn-outline-danger">Remove</i>
+                                </div>
+                            </dic>
+                            
+                        }
+    
                     </div>
                     <div class="row mt-3">
                         <div class="col-6 col-md-3">
@@ -66,13 +79,13 @@ else
                             </button>
                         </div>
                         <div class="col-6 col-md-3">
-                           <a href="/Product" class="btn btn-secondary form-control">
+                            <a href="/Product" class="btn btn-secondary form-control">
                                 <i class="bi bi-arrow-bar-left"></i> Back to list
                             </a>
                         </div>
                     </div>
                 </div>
-            </EditForm>             
+            </EditForm>
         </div>
     </div>
 }
@@ -91,6 +104,12 @@ else
     private string? _directoryPath { get; set; }
 
     private bool _isImageLoad { get; set; } = false;
+
+    protected override Task OnInitializedAsync()
+    {
+        _directoryPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "product");
+        return base.OnInitializedAsync();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -131,6 +150,19 @@ else
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-           
+        IsProcessing = true;
+        var file = e.File;
+        FileInfo fileInfo = new (file.Name);
+        var newFileName = $"{Guid.NewGuid()}{fileInfo.Extension}";
+        if (!Directory.Exists(_directoryPath))
+        {
+            Directory.CreateDirectory(_directoryPath);
+        }
+        var path = Path.Combine(_directoryPath, newFileName);
+
+        await using FileStream fileStream = new (path, FileMode.Create);
+        await file.OpenReadStream(file.Size).CopyToAsync(fileStream);
+        Product.ImageUrl = $"/images/product/{newFileName}";
+        IsProcessing = false;
     }
 }
