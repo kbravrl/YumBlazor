@@ -1,7 +1,7 @@
 ﻿@page "/category"
 
 @inject ICategoryRepository _categoryRepository
-@inject IJSRuntime _jsRuntime
+@inject IJSRuntime _JSRuntime
 
 <BootstrapModal  OnModalConfirmation="ConfirmDeleteClick"
     ButtonBootstrapStyle="btn-danger"
@@ -88,20 +88,20 @@ else
     private void HandleDelete(int id)
     {
         DeleteCategoryID = id;
-        _jsRuntime.InvokeVoidAsync("ShowConfirmationModal");
+        _JSRuntime.InvokeVoidAsync("ShowConfirmationModal");
     }
 
     private async Task ConfirmDeleteClick(bool isConfirmed)
     {
         IsProcessing = true;
-        await _jsRuntime.InvokeVoidAsync("HideConfirmationModal");
+        await _JSRuntime.InvokeVoidAsync("HideConfirmationModal");
         if(isConfirmed && DeleteCategoryID != 0)
         {
             var result = await _categoryRepository.DeleteAsync(DeleteCategoryID);
             if(result)
-              _jsRuntime.ToastrSuccess("Category Delete Successfully");
+                _JSRuntime.ToastrSuccess("Category Delete Successfully");
             else
-                _jsRuntime.ToastrError("Category Delete Failed");
+                _JSRuntime.ToastrError("Category Delete Failed");
             await LoadCategories();
         }
         DeleteCategoryID = 0;
