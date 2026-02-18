@@ -4,9 +4,9 @@
 @using Microsoft.AspNetCore.Authorization
 @inject AuthenticationStateProvider _AuthenticationStateProvider
 @inject IShoppingCartRepository _shoppingCartRepository
+@inject IOrderRepository _orderRepository;
+@inject NavigationManager _navigationManager;
 @attribute [Authorize]
-
-<PageTitle>Home</PageTitle>
 
 @if (IsProcessing)
 {
@@ -178,6 +178,11 @@ else
 
     private async Task ProcessOrderCreation()
     {
-       
+        IsProcessing = true;
+        await Task.Yield();
+        OrderHeader.OrderDetails = SD.ConvertShoppingCartListToOrderDetail(ShoppingCarts.ToList());
+
+        await _orderRepository.CreateAsync(OrderHeader);
+        _navigationManager.NavigateTo($"/order/confirmation/{OrderHeader.Id}");
     }
 }
