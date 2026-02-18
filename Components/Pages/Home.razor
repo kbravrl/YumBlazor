@@ -150,7 +150,7 @@ else
 
         if (!authenticated)
         {
-            _NavigationManager.NavigateTo("account/login");
+            _NavigationManager.NavigateTo("Account/Login");
         }
         else
         {
@@ -159,11 +159,11 @@ else
             _shoppingCartRepository.UpdateCartAsync(userId, product.Id, 1);
             if (result)
             {
-                _JSRuntime.ToastrSuccess("Product added to cart successfully");
+                _JSRuntime?.ToastrSuccess("Product added to cart successfully");
             }
             else
             {
-                _JSRuntime.ToastrError("Error encountered");
+                _JSRuntime?.ToastrError("Error encountered");
             }
         }
 
