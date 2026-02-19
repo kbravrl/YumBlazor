@@ -3,6 +3,7 @@
 
 @inject IProductRepository _ProductRepository
 @inject IJSRuntime _jsRuntime
+@inject NavigationManager _navigationManager
 
 <BootstrapModal  OnModalConfirmation="ConfirmDeleteClick"
     ButtonBootstrapStyle="btn-danger"
@@ -36,37 +37,29 @@ else
             </div>
             @if(Products.Any())
             {
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Special Tag</th>
-                            <th>Category</th>
-                            <th></th>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        @foreach(var Product in Products)
-                        {
-                            <tr>
-                                <td>@Product.Name</td>
-                                <td>@Product.Price.ToString("C", CultureInfo.GetCultureInfo("en-us"))</td>
-                                <td><span class="badge text-bg-info">@Product.SpecialTag</span></td>
-                                <td>@Product.Category.Name</td>
-                                <td class="text-end">
-                                    <a href="@($"/Product/update/{Product.Id}")" class="btn btn-sm btn-primary">
-                                        <i class="bi bi-pencil-square"></i> Edit
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" @onclick="() => HandleDelete(Product.Id)">
-                                        <i class="bi bi-trash3"></i>Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+                                AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                                ShowPagingSummary="true" Data="@Products" ColumnWidth="300px"
+                                LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
+                    <Columns>
+                        <RadzenDataGridColumn Property="Id" Filterable="true" Title="ID" Frozen="true" Width="80px" />
+                        <RadzenDataGridColumn Property="Name" Title="Name" Frozen="true" Width="160px" />
+                        <RadzenDataGridColumn Property="Price" Title="Price" FormatString="{0:C}" Width="120px" />
+                        <RadzenDataGridColumn Property="Description" Title="Description" Width="120px" />
+                        <RadzenDataGridColumn Property="SpecialTag" Title="Special Tag" Width="140px" />
+                        <RadzenDataGridColumn Property="Category.Name" Title="Category" Width="120px" />
+                        <RadzenDataGridColumn Title="Action" Sortable="false" Filterable="false" Width="200px" TextAlign="TextAlign.Center">
+                            <Template Context="product">
+                                <RadzenButton Shade="Shade.Lighter" Text="Edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small"
+                                              Click="@(()=>_navigationManager.NavigateTo($"/Product/update/{product.Id}"))">
+                                </RadzenButton>
+                                <RadzenButton Shade="Shade.Lighter" Text="Delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small"
+                                              Click="@(()=>HandleDelete(product.Id))">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
             }
         </div>
     </div>
