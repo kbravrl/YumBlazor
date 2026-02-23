@@ -37,6 +37,13 @@ builder.Services.AddAuthentication(options =>
         options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"]
             ?? throw new InvalidOperationException("Facebook AppSecret not found.");
     })
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"]
+            ?? throw new InvalidOperationException("Google ClientId not found.");
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]
+            ?? throw new InvalidOperationException("Google ClientSecret not found.");
+    })
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
