@@ -2,6 +2,7 @@
 using Stripe.Checkout;
 using YumBlazor.Data;
 using YumBlazor.Repository.IRepository;
+using YumBlazor.Utility;
 
 namespace YumBlazor.Services
 {
@@ -48,5 +49,16 @@ namespace YumBlazor.Services
             return session;
         }
 
+        public async Task<OrderHeader> CheckPaymentStatusAndUpdateOrder(string sessionId)
+        {
+            OrderHeader orderHeader = await _orderRepository.GetOrderBySessionIdAsync(sessionId);
+            var service = new SessionService();
+            var session = service.Get(sessionId);
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                await _orderRepository.UpdateStatusAsync(orderHeader.Id, SD.StatusApproved, session.PaymentIntentId);
+            }
+            return orderHeader;
+        }
     }
 }
