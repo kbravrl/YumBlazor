@@ -1,4 +1,6 @@
 ﻿@page "/order/confirmation/{sessionId}"
+@inject PaymentService _paymentService
+@inject IShoppingCartRepository _shoppingCartRepository
 
 @if (IsProcessing)
 {
@@ -20,11 +22,17 @@ else
 
 @code {
     [Parameter]
-    public int sessionId { get; set; }
+    public string sessionId { get; set; }
     private bool IsProcessing { get; set; } = true;
+    private OrderHeader orderHeader { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        orderHeader = await _paymentService.CheckPaymentStatusAndUpdateOrder(sessionId);
+        if(orderHeader.Status == SD.StatusApproved)
+        {
+            await _shoppingCartRepository.ClearCartAsync(orderHeader.UserId);
+        }
         IsProcessing = false;
     }
 }
