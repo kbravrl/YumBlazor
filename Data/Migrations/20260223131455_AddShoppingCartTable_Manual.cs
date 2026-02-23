@@ -6,9 +6,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace YumBlazor.Migrations
 {
     /// <inheritdoc />
-    public partial class AddShoppingCartTable : Migration
+    public partial class AddShoppingCartTable_Manual : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -57,3 +56,4 @@ namespace YumBlazor.Migrations
         }
     }
 }
+
