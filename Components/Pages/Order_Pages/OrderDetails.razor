@@ -61,7 +61,7 @@ else
                         <a href="order/list" class="btn btn-secondary  m-2 p-2" style="width:150px;">Back to Orders</a>
                     </div>
                     <div class="col-7 text-end">
-                        @if (OrderHeader.Status != SD.StatusCancelled && OrderHeader.Status != SD.StatusCompleted
+                        @if (OrderHeader.Status != SD.StatusCancelled && OrderHeader.Status != SD.StatusApproved
                         && _AuthenticationStateProvider.GetAuthenticationStateAsync().GetAwaiter().GetResult().User?.IsInRole(SD.Role_Admin) == true)
                         {
                             <button class="btn btn-danger m-2 p-2" @onclick="() => UpdateStatus(SD.StatusCancelled)" style="width:150px;">Cancelled</button>
@@ -72,7 +72,7 @@ else
                             }
                             @if (OrderHeader.Status == SD.StatusReadyForPickUp)
                             {
-                                <button class="btn btn-success m-2 p-2" @onclick="() => UpdateStatus(SD.StatusCompleted)" style="width:150px;">Completed</button>
+                                <button class="btn btn-success m-2 p-2" @onclick="() => UpdateStatus(SD.StatusApproved)" style="width:150px;">Completed</button>
                             }
                         }
                     </div>
@@ -106,7 +106,7 @@ else
 
     private async Task UpdateStatus(string newStatus)
     {
-        await _orderRepository.UpdateStatusAsync(Id, newStatus);
+        await _orderRepository.UpdateStatusAsync(Id, newStatus, "");
         _JSRuntime?.ToastrSuccess("Status updated successfully to " + newStatus);
     }
 }
