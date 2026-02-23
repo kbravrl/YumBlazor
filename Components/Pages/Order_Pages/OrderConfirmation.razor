@@ -1,4 +1,4 @@
-﻿@page "/order/confirmation/{orderId:int}"
+﻿@page "/order/confirmation/{sessionId}"
 
 @if (IsProcessing)
 {
@@ -11,7 +11,6 @@ else
     <div class="text-center">
         <h1 class="pt-4 text-success">You are one stop closer to delicious food!</h1>
         <p>Your order is confirmed! Please note your order ID for any questions. </p>
-        <p>Order ID: <b>@orderId</b></p>
         <hr />
         <img src="/images/lawn_leaf.jpg" width="40%" />
         <hr />
@@ -21,7 +20,7 @@ else
 
 @code {
     [Parameter]
-    public int orderId { get; set; }
+    public int sessionId { get; set; }
     private bool IsProcessing { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
