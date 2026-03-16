@@ -1,48 +1,48 @@
 # 🛒 YumBlazor – Blazor ile E-Ticaret Uygulaması
 
-**YumBlazor**, modern web teknolojileri kullanılarak geliştirilmiş bir **e-ticaret web uygulamasıdır**.  
+**YumBlazor**, modern web teknolojileri kullanılarak geliştirilmiş bir e-ticaret web uygulamasıdır.  
 Proje **Blazor ve .NET** kullanılarak geliştirilmiş olup kullanıcı yönetimi, ürün listeleme, alışveriş sepeti ve ödeme işlemleri gibi temel e-ticaret özelliklerini içermektedir.
 
-Bu proje, **Blazor ile gerçek dünya uygulaması geliştirme pratiği yapmak** amacıyla geliştirilmiştir.
+Bu proje, Blazor ile gerçek dünya uygulaması geliştirme pratiği yapmak amacıyla geliştirilmiştir.
 
 ---
 
-# 🚀 Features
+# 🚀 Özellikler
 
-## 🔐 Authentication & Authorization
+## 🔐 Kimlik Doğrulama ve Yetkilendirme
 - Kullanıcı kayıt ve giriş sistemi
 - Rol tabanlı yetkilendirme
-- External login (Google, Microsoft, Facebook)
+- Harici giriş sağlayıcıları (Google, Microsoft, Facebook)
 
-## 🛍 Product Management
+## 🛍 Ürün Yönetimi
 - Ürün listeleme
 - Ürün ekleme, güncelleme ve silme
 - Ürün detay sayfası
 
-## 🛒 Shopping Cart
+## 🛒 Alışveriş Sepeti
 - Sepete ürün ekleme
 - Sepetten ürün çıkarma
-- Sepet toplam fiyat hesaplama
+- Sepet toplam tutarını hesaplama
 
-## 📦 Order Management
+## 📦 Sipariş Yönetimi
 - Sipariş oluşturma
-- Sipariş geçmişi görüntüleme
-- Sipariş detay sayfası
+- Sipariş geçmişini görüntüleme
+- Sipariş detaylarını görüntüleme
 
-## 💳 Payment Integration
+## 💳 Ödeme Entegrasyonu
 - Stripe ile güvenli ödeme sistemi
 
-## 🔔 Notifications
+## 🔔 Bildirimler
 - Toastr bildirimleri ile kullanıcı geri bildirimleri
 
 ---
 
-# 🛠️ Technologies Used
+# 🛠 Kullanılan Teknolojiler
 
 - .NET
 - Blazor
 - Entity Framework Core
-- SQL Server
+- PostgreSQL
 - .NET Identity
 - Bootstrap 5
 - Stripe Payment API
@@ -53,18 +53,17 @@ Bu proje, **Blazor ile gerçek dünya uygulaması geliştirme pratiği yapmak** 
 
 ---
 
-# ⚙️ Getting Started
+# ⚙️ Kurulum
 
-## 1️⃣ Clone the repository
+## 1️⃣ Projeyi klonla
 
-git clone https://github.com/kbravrl/YumBlazor.git
-cd YumBlazor
+git clone https://github.com/kbravrl/YumBlazor.git  
 
 ---
 
-## 2️⃣ Configure the Database
+## 2️⃣ Veritabanını yapılandır
 
-appsettings.json dosyasında connection string ayarlayın:
+`appsettings.json` dosyasında connection string ayarını düzenleyin:
 
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=YumBlazorDB;Trusted_Connection=True;"
@@ -72,12 +71,12 @@ appsettings.json dosyasında connection string ayarlayın:
 
 ---
 
-## 3️⃣ Run Migrations
+## 3️⃣ Migration çalıştır
 
 dotnet ef database update
 
 ---
 
-## 4️⃣ Run the Application
+## 4️⃣ Uygulamayı çalıştır
 
 dotnet run
